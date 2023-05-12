@@ -11,7 +11,7 @@ interface GenericObject {
  * @param positive The "direction" to sanitize. Positive will keep only the keys in `sanitizeOn`, negative will remove the keys in `sanitizeOn`
  * @returns The sanitized body object
  */
-function sanitizer(body: GenericObject, sanitizeOn: string[] | string, positive: boolean = true) {
+function sanitizer(body: GenericObject, sanitizeOn: string[] | string, positive: boolean = false) {
     if (!Array.isArray(sanitizeOn)) {
         sanitizeOn = [sanitizeOn];
     }
