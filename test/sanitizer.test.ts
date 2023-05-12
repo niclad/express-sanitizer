@@ -9,7 +9,7 @@ describe("Sanitizer", () => {
         const expectedObj = {...testA} as any;
         delete expectedObj.password;
 
-        expect(sanitizer(testA, sanitizeOn)).toEqual(expectedObj);
+        expect(sanitizer(testA, sanitizeOn, true)).toEqual(expectedObj);
     });
 
     test("Sanitizer removes the `username` and `blahblah` keys", () => {

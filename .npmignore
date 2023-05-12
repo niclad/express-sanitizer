@@ -1,0 +1,7 @@
+test
+babel*
+tsconfig*
+index.ts
+lib/
+    sanitizer.ts
+```

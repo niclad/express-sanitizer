@@ -2,10 +2,13 @@
   "name": "express-sanitizer",
   "version": "0.1.0",
   "description": "Express middleware to sanitize JSON responses",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
-    "ts-node": "ts-node src/index.ts"
+    "ts-node": "ts-node src/index.ts",
+    "prepublish": "tsc",
+    "clean": "tsc --clean"
   },
   "repository": {
     "type": "git",
@@ -16,7 +19,8 @@
     "sanitize",
     "Express",
     "middleware",
-    "json"
+    "json",
+    "response"
   ],
   "author": "Nick T",
   "license": "MPL-2.0",
