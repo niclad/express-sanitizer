@@ -30,7 +30,15 @@ function sanitizer(body: GenericObject, sanitizeOn: string[] | string, positive:
     return body;
 }
 
-function sanitize(sanitizeOn: string[] | string, positive: boolean = true) {
+/**
+ * Sanitize the response body using the given keys.
+ * @param sanitizeOn List of keys to sanitize from the response body
+ * @param positive The direction to sanitize on. 
+ * `positize === true` will keep only the keys in `sanitizeOn`, 
+ * `positive === false` will remove the keys in `sanitizeOn`
+ * @returns Middleware function to sanitize the response body
+ */
+function sanitize(sanitizeOn: string[] | string, positive: boolean = false) {
     return (req: Request, res: Response, next: NextFunction) => {
         const _json = res.json;
         res.json = function (body: unknown): Response {
