@@ -1,29 +1,30 @@
-import { describe, expect, test } from "@jest/globals";
-import { sanitizer } from "../lib/sanitizer";
-import { testA } from "./test-objects";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { describe, expect, test } from '@jest/globals';
+import { sanitizer } from '../src/lib/sanitizer';
+import { testA } from './test-objects';
 
-describe("Sanitizer", () => {
-    const sanitizeOn: string[] = ['username', 'blahblah'];
+describe('Sanitizer', () => {
+  const sanitizeOn: string[] = ['username', 'blahblah'];
 
-    test("Sanitizer keeps only the `username` and `blahblah` keys", () => {
-        const expectedObj = {...testA} as any;
-        delete expectedObj.password;
+  test('Sanitizer keeps only the `username` and `blahblah` keys', () => {
+    const expectedObj = { ...testA } as any;
+    delete expectedObj.password;
 
-        expect(sanitizer(testA, sanitizeOn, true)).toEqual(expectedObj);
-    });
+    expect(sanitizer(testA, sanitizeOn, true)).toEqual(expectedObj);
+  });
 
-    test("Sanitizer removes the `username` and `blahblah` keys", () => {
-        const expectedObj = {...testA} as any;
-        delete expectedObj.username;
-        delete expectedObj.blahblah;
+  test('Sanitizer removes the `username` and `blahblah` keys', () => {
+    const expectedObj = { ...testA } as any;
+    delete expectedObj.username;
+    delete expectedObj.blahblah;
 
-        expect(sanitizer(testA, sanitizeOn, false)).toEqual(expectedObj);
-    });
+    expect(sanitizer(testA, sanitizeOn, false)).toEqual(expectedObj);
+  });
 
-    test("Sanitizer removes the `password` key", () => {
-        const expectedObj = {...testA} as any;
-        delete expectedObj.password;
+  test('Sanitizer removes the `password` key', () => {
+    const expectedObj = { ...testA } as any;
+    delete expectedObj.password;
 
-        expect(sanitizer(testA, 'password')).toEqual(expectedObj);
-    });
+    expect(sanitizer(testA, 'password')).toEqual(expectedObj);
+  });
 });

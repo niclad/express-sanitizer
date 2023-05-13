@@ -1,28 +1,21 @@
-import { describe, expect, test } from "@jest/globals";
-import sanitize from "../index";
-import { NextFunction, Request, Response } from "express";
-import { testA } from "./test-objects";
+import { describe, expect, test } from '@jest/globals';
+import sanitize from '../src/index';
+import { NextFunction, Request, Response } from 'express';
 
-describe("Sanitize middleware", () => {
-    let mockRequest: Partial<Request>;
-    let mockResponse: Partial<Response>;
-    let nextFunction: NextFunction = jest.fn();
+describe('Sanitize middleware', () => {
+  let mockRequest: Partial<Request>;
+  let mockResponse: Partial<Response>;
+  const nextFunction: NextFunction = jest.fn();
 
+  beforeEach(() => {
+    mockRequest = {};
+    mockResponse = {
+      json: jest.fn(),
+    };
+  });
 
-    beforeEach(() => {
-        mockRequest = {};
-        mockResponse = {
-            json: jest.fn(),
-        };
-    });
-
-    test("No `password`", async () => {
-        const expectedBody = {
-            username: 'Peter Parker',
-            blahblah: false
-        };
-
-        sanitize(['password'], false)(mockRequest as Request, mockResponse as Response, nextFunction);
-        expect(nextFunction).toBeCalledTimes(1);
-    });
+  test('No `password`', async () => {
+    sanitize(['password'], false)(mockRequest as Request, mockResponse as Response, nextFunction);
+    expect(nextFunction).toBeCalledTimes(1);
+  });
 });
