@@ -8,7 +8,7 @@
     "build": "tsc",
     "clean": "rm -rf dist",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "lint": "eslint -p tsconfig.json",
+    "lint": "eslint",
     "postversion": "git push && git push --tags",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
