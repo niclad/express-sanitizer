@@ -1,6 +1,6 @@
 {
   "name": "sanitware",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Express middleware to sanitize JSON responses",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
