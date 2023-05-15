@@ -1,45 +1,62 @@
 import { version } from 'process';
 
-interface Version {
-  major: string;
-  minor: string;
-  patch: string;
-}
+const EARLIEST_SUPPORTED_VERSION: string = 'v17.0.29';
 
-const EARLIEST_SUPPORTED_VERSION: Version = {
-  major: '17',
-  minor: '0',
-  patch: '29',
-};
-
-/**
- * Check the current Node version against the earliest supported version.
- * @returns True if the current Node version is supported, false otherwise
- */
-function checkCompatibility(): boolean {
-  const currVer: Version = getCurrVer();
-  return (
-    EARLIEST_SUPPORTED_VERSION.major <= currVer.major &&
-    EARLIEST_SUPPORTED_VERSION.minor <= currVer.minor &&
-    EARLIEST_SUPPORTED_VERSION.patch <= currVer.patch
-  );
-}
-
-/**
- * Get the current Node version as a Version object.
- * @returns The current Node version as a Version object
- */
-function getCurrVer(): Version {
-  const verRegex: RegExp = /^v(?<major>\d*).(?<minor>\d*).(?<patch>\d*)$/;
-  const currVer = verRegex.exec(version);
-
-  if (!currVer || !currVer.groups) {
-    throw new Error('Unable to parse Node version');
+class Version {
+  private _major: string;
+  get major(): number {
+    return parseInt(this._major);
   }
 
-  console.log(currVer);
+  private _minor: string;
+  get minor(): number {
+    return parseInt(this._minor);
+  }
 
-  return currVer.groups as unknown as Version;
+  private _patch: string;
+  get patch(): number {
+    return parseInt(this._patch);
+  }
+
+  constructor(ver?: string) {
+    const tempVer: { major: string, minor: string, patch: string } = ver ? this.parseVersion(ver) : this.parseVersion(version);
+    this._major = tempVer.major;
+    this._minor = tempVer.minor;
+    this._patch = tempVer.patch;
+  }
+
+  parseVersion(ver: string): { major: string, minor: string, patch: string } {
+    const verRegex: RegExp = /^v(?<major>\d*).(?<minor>\d*).(?<patch>\d*)$/;
+    const currVer = verRegex.exec(ver);
+
+    if (!currVer || !currVer.groups) {
+      throw new Error('Unable to parse Node version');
+    }
+
+    return currVer.groups as unknown as { major: string, minor: string, patch: string };
+  }
+
+  isCompatible(currVer: string) {
+    const tempVer: Version = new Version(currVer);
+    return this.compare(tempVer);
+  }
+
+  compare(ver: Version): boolean {
+    if (this.major !== ver.major) {
+      return this.major < ver.major;
+    }
+
+    if (this.minor !== ver.minor) {
+      return this.minor < ver.minor;
+    }
+
+    return this.patch < ver.patch;
+  }
+}
+
+function checkCompatibility(): boolean {
+  const earliestVer: Version = new Version(EARLIEST_SUPPORTED_VERSION);
+  return earliestVer.isCompatible(version);
 }
 
 export { checkCompatibility };

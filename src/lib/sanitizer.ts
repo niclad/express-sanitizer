@@ -44,13 +44,12 @@ function sanitize(sanitizeOn: string[] | string, positive = false) {
   return (req: Request, res: Response, next: NextFunction) => {
     const _json = res.json;
     res.json = function (body: unknown): Response {
-      if (!body || body.constructor !== Object) {
+      if (!body || typeof body !== 'object') {
         _json.call(this, body);
         return res;
       }
 
       const sanitizedBody = sanitizer(clone(body), sanitizeOn, positive);
-      console.log(sanitizedBody);
       _json.call(this, sanitizedBody);
       return res;
     };
