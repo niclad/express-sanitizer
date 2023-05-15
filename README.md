@@ -1,6 +1,8 @@
 # Express sanitizer middleware
 Express middleware to sanitize JSON responses.
 
+⚠️ When using this, please thoroughly test your code. My personal use case is very limited and I can make no guarantees about the effectivity of this package.
+
 ⚠️ This will only sanitize responses when sent using `res.json(...)` in Express.
 
 # Install
