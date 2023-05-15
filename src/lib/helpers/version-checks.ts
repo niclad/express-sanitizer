@@ -19,13 +19,15 @@ class Version {
   }
 
   constructor(ver?: string) {
-    const tempVer: { major: string, minor: string, patch: string } = ver ? this.parseVersion(ver) : this.parseVersion(version);
+    const tempVer: { major: string; minor: string; patch: string } = ver
+      ? this.parseVersion(ver)
+      : this.parseVersion(version);
     this._major = tempVer.major;
     this._minor = tempVer.minor;
     this._patch = tempVer.patch;
   }
 
-  parseVersion(ver: string): { major: string, minor: string, patch: string } {
+  parseVersion(ver: string): { major: string; minor: string; patch: string } {
     const verRegex: RegExp = /^v(?<major>\d*).(?<minor>\d*).(?<patch>\d*)$/;
     const currVer = verRegex.exec(ver);
 
@@ -33,7 +35,7 @@ class Version {
       throw new Error('Unable to parse Node version');
     }
 
-    return currVer.groups as unknown as { major: string, minor: string, patch: string };
+    return currVer.groups as unknown as { major: string; minor: string; patch: string };
   }
 
   isCompatible(currVer: string) {
