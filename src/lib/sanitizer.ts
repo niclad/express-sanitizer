@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { checkCompatibility } from './helpers/version-checks';
 
 interface GenObj {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,7 +24,7 @@ function sanitizer(body: GenObj, sanitizeOn: string[] | string, positive = false
   keys.forEach((key) => {
     if (direction(key)) {
       delete body[key];
-    } else if (body[key] && body[key]?.constructor === Object) {
+    } else if (body[key] && typeof body[key] === 'object') {
       body[key] = sanitizer(body[key], sanitizeOn, positive);
     }
   });
@@ -43,13 +44,12 @@ function sanitize(sanitizeOn: string[] | string, positive = false) {
   return (req: Request, res: Response, next: NextFunction) => {
     const _json = res.json;
     res.json = function (body: unknown): Response {
-      if (!body || body.constructor !== Object) {
+      if (!body || typeof body !== 'object') {
         _json.call(this, body);
         return res;
       }
 
-      const sanitizedBody = sanitizer(body, sanitizeOn, positive);
-      console.log(sanitizedBody);
+      const sanitizedBody = sanitizer(clone(body), sanitizeOn, positive);
       _json.call(this, sanitizedBody);
       return res;
     };
@@ -57,4 +57,18 @@ function sanitize(sanitizeOn: string[] | string, positive = false) {
   };
 }
 
-export { sanitizer, sanitize };
+/**
+ * Clone a given object based on Node.js version.
+ * (Prefer `structuredClone` if available.)
+ * @param obj The object to clone
+ * @returns The cloned object
+ */
+function clone(obj: object): object {
+  if (checkCompatibility()) {
+    return structuredClone(obj);
+  } else {
+    return JSON.parse(JSON.stringify(obj));
+  }
+}
+
+export { sanitize, sanitizer };
