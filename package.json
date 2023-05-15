@@ -1,5 +1,5 @@
 {
-  "name": "express-sanitizer",
+  "name": "sanitware",
   "version": "0.1.0",
   "description": "Express middleware to sanitize JSON responses",
   "main": "dist/index.js",
@@ -9,7 +9,7 @@
     "clean": "rm -rf dist",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint -p tsconfig.json",
-    "postversion":"git push && git push --tags",
+    "postversion": "git push && git push --tags",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
